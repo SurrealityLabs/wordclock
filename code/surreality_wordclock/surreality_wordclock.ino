@@ -71,12 +71,16 @@ void clearPixel(uint8_t xCoord, uint8_t yCoord) {
 void displayTimerHandler() {
   cbi(LoadPinPort, LoadPinBit);
 
+  digitalWrite(BrightPin, 1);
+
   srWrite(0);
   srWrite(displayArray[currentCol]);
   srWrite(columnMaskH[currentCol]);
   srWrite(columnMaskL[currentCol]);
 
   sbi(LoadPinPort, LoadPinBit);
+  
+  digitalWrite(BrightPin, 0);
   
   currentCol++;
   currentCol %= 16;

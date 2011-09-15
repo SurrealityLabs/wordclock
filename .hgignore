@@ -1,3 +1,4 @@
+glob:.DS_Store/
 glob:**.b\#1
 glob:**.b\#2
 glob:**.b\#3
