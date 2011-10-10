@@ -1,5 +1,7 @@
 volatile uint8_t displayArray[16];
 volatile uint8_t currentCol = 0;
+uint8_t newDisplayArray[16];
+volatile uint8_t newDisplayArrayReady = 0;
 uint8_t columnMaskH[] = {0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000, 0, 0, 0, 0, 0, 0, 0, 0};
 uint8_t columnMaskL[] = {0, 0, 0, 0, 0, 0, 0, 0, 0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000};
 
@@ -251,6 +253,10 @@ void loop() {
     changeElevenHour(0);
   }
   
+  while(!newDisplayArrayReady);
+  
+  memcpy((uint8_t *)displayArray, newDisplayArray, 16);
+  
     Serial.print(now.year(), DEC);
     Serial.print('/');
     Serial.print(now.month(), DEC);
@@ -264,22 +270,23 @@ void loop() {
     Serial.print(now.second(), DEC);
     Serial.println();
     
-  delay(1000);
+  delay(100);
 }
 
 void setPixel(uint8_t xCoord, uint8_t yCoord) {
   xCoord %= 16;
   yCoord %= 8;
-  displayArray[xCoord] |= _BV(yCoord);
+  newDisplayArray[xCoord] |= _BV(yCoord);
 }
 
 void clearPixel(uint8_t xCoord, uint8_t yCoord) {
   xCoord %= 16;
   yCoord %= 8;
-  displayArray[xCoord] &= ~(_BV(yCoord));
+  newDisplayArray[xCoord] &= ~(_BV(yCoord));
 }
 
 void displayTimerHandler() {
+  newDisplayArrayReady = 0;
   cbi(LoadPinPort, LoadPinBit);
 
   digitalWrite(BrightPin, 1);
@@ -295,6 +302,9 @@ void displayTimerHandler() {
   
   currentCol++;
   currentCol %= 16;
+  if(currentCol == 0) {
+    newDisplayArrayReady = 1;
+  }
 }
 
 void srWrite(uint8_t byteToWrite) {
