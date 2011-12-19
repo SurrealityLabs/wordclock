@@ -324,7 +324,6 @@ void RenderTime(DateTime *currentTime) {
 			setPixel(NewDisplayArray, 6, 2);
 			setPixel(NewDisplayArray, 7, 2);
 			setPixel(NewDisplayArray, 8, 2);
-			setPixel(NewDisplayArray, 9, 2);
 			break;
 		case 4:
 			setPixel(NewDisplayArray, 12, 2);
