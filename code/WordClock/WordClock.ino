@@ -6,8 +6,8 @@
 #include "debounce.h"
 
 #define SecondsButtonPin 8
-#define DownButtonPin 7
-#define UpButtonPin 6
+#define DownButtonPin 6
+#define UpButtonPin 7
 #define SetButtonPin 5
 
 #define SETSTATE_HOUR 1
@@ -38,8 +38,8 @@ void setup() {
     SetupFastShiftOut();
     
     SecondsButton = InitializeDebounce(5, 5, 0);
-    DownButton = InitializeDebounce(5, 5, 100);
-    UpButton = InitializeDebounce(5, 5, 100);
+    DownButton = InitializeDebounce(5, 5, 500);
+    UpButton = InitializeDebounce(5, 5, 500);
     SetButton = InitializeDebounce(5, 5, 0);
     
     pinMode(SecondsButtonPin, INPUT);
