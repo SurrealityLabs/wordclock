@@ -61,9 +61,10 @@ void setup() {
     
     digitalWrite(10, LOW);
     
-    Timer1.initialize(625);
+    Timer1.initialize(525);
     Timer1.attachInterrupt(displayTimerHandler);
     Timer1.pwm(10, 0, 0);
+    //digitalWrite(10, LOW);
 }
 
 void loop() {
