@@ -27,6 +27,8 @@ uint8_t setState = 0;
 uint8_t setValue = 0;
 DateTime setTime;
 
+int brightnessAccumulator = 0;
+
 extern void RenderTime(DateTime *currentTime);
 extern void RenderTimeSeconds(DateTime *currentTime);
 extern void RenderDigits(uint8_t dispNumber, uint8_t setQuadrant);
@@ -84,9 +86,13 @@ void loop() {
     Serial.println();
     
     int lightReading = analogRead(0);
-    if(lightReading > 175) lightReading = 175;
-    if(lightReading < 10) lightReading = 10;
-    int pwmOut = map(lightReading, 10, 175, 900, 0);
+    Serial.print("Raw ight reading: ");
+    Serial.println(lightReading);
+    lightReading = constrain(lightReading, 0, 50);
+    brightnessAccumulator -= (brightnessAccumulator >> 4);
+    brightnessAccumulator += lightReading;
+    lightReading = brightnessAccumulator >> 4;
+    int pwmOut = map(lightReading, 0, 50, 950, 0);
     Timer1.setPwmDuty(10, pwmOut);
     Serial.print("Light reading: ");
     Serial.print(lightReading);
