@@ -88,12 +88,11 @@ void loop() {
     int lightReading = analogRead(0);
     Serial.print("Raw ight reading: ");
     Serial.println(lightReading);
-    lightReading = constrain(lightReading, 0, 50);
+    lightReading = constrain(lightReading, 0, 30);
     brightnessAccumulator -= (brightnessAccumulator >> 4);
     brightnessAccumulator += lightReading;
-    lightReading = brightnessAccumulator >> 4;
-    int pwmOut = map(lightReading, 0, 50, 950, 0);
-    Timer1.setPwmDuty(10, pwmOut);
+    int pwmOut = map(brightnessAccumulator, 0, 480, 950, 0);
+    Timer1.setPwmDuty(10, 0);
     Serial.print("Light reading: ");
     Serial.print(lightReading);
     Serial.print(", PWM output: ");
