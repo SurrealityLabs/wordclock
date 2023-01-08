@@ -20,7 +20,7 @@ uint8_t RTC_MCP794XX::isrunning(void) {
     return (ss & 0x20);
 }
 
-void RTC_MCP794XX::adjust(const DateTime& dt) {
+void RTC_MCP794XX::adjust(const myDateTime& dt) {
     Wire.beginTransmission(MCP794XX_ADDRESS);
     Wire.write(byte(0));
     Wire.write(bin2bcd(dt.second()) | 0x80);
@@ -34,7 +34,7 @@ void RTC_MCP794XX::adjust(const DateTime& dt) {
     Wire.endTransmission();
 }
 
-DateTime RTC_MCP794XX::now() {
+myDateTime RTC_MCP794XX::now() {
     Wire.beginTransmission(MCP794XX_ADDRESS);
     Wire.write(byte(0));	
     Wire.endTransmission();
@@ -48,7 +48,7 @@ DateTime RTC_MCP794XX::now() {
     uint8_t m = bcd2bin(Wire.read() & 0x1F);
     uint16_t y = bcd2bin(Wire.read()) + 2000;
   
-    return DateTime (y, m, d, hh, mm, ss);
+    return myDateTime (y, m, d, hh, mm, ss);
 }
 
 uint8_t RTC_DS1307::begin(void) {
@@ -65,7 +65,7 @@ uint8_t RTC_DS1307::isrunning(void) {
     return !(ss >> 7);
 }
 
-void RTC_DS1307::adjust(const DateTime& dt) {
+void RTC_DS1307::adjust(const myDateTime& dt) {
     Wire.beginTransmission(DS1307_ADDRESS);
     Wire.write(byte(0));
     Wire.write(bin2bcd(dt.second()));
@@ -79,7 +79,7 @@ void RTC_DS1307::adjust(const DateTime& dt) {
     Wire.endTransmission();
 }
 
-DateTime RTC_DS1307::now() {
+myDateTime RTC_DS1307::now() {
     Wire.beginTransmission(DS1307_ADDRESS);
     Wire.write(byte(0));	
     Wire.endTransmission();
@@ -93,5 +93,5 @@ DateTime RTC_DS1307::now() {
     uint8_t m = bcd2bin(Wire.read());
     uint16_t y = bcd2bin(Wire.read()) + 2000;
   
-    return DateTime (y, m, d, hh, mm, ss);
+    return myDateTime (y, m, d, hh, mm, ss);
 }

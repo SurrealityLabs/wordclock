@@ -24,9 +24,6 @@
 extern volatile uint8_t DisplayArray[16];
 extern volatile uint8_t DisplayArrayReady;
 
-extern uint8_t columnMaskH[];
-extern uint8_t columnMaskL[];
-
 void OutputDisplayColumn(uint8_t colNum);
 void ClearDisplayArray();
 void FastShiftOut(uint8_t shiftVal);

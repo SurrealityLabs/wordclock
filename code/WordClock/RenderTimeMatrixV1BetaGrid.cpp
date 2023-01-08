@@ -5,7 +5,7 @@
 #include "MatrixDisplay.h"
 #include "Font5x8Digits.h"
 
-void RenderTime(DateTime *currentTime) {
+void RenderTime(myDateTime *currentTime) {
   uint8_t NewDisplayArray[16];
   uint8_t i, thisHour;
   uint8_t amPm = 0;
@@ -386,7 +386,7 @@ void RenderTime(DateTime *currentTime) {
 
 // MIKE, don't edit this part
 
-void RenderTimeSeconds(DateTime *currentTime) {
+void RenderTimeSeconds(myDateTime *currentTime) {
   uint8_t NewDisplayArray[16];
   uint8_t i, j=0;
 
@@ -398,11 +398,11 @@ void RenderTimeSeconds(DateTime *currentTime) {
   i /= 10;
   if(i != 0) {
     j = 13;
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][0]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][1]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][2]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][3]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][4]]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][0])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][1])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][2])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][3])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][4])]);
     j--;
   } 
   else {
@@ -411,11 +411,11 @@ void RenderTimeSeconds(DateTime *currentTime) {
 
   i = currentTime->second();
   i %= 10;
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][0]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][1]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][2]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][3]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][4]]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][0])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][1])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][2])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][3])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][4])]);
 
   // Copy the new display buffer to the main buffer when it's done drawing
   while(!DisplayArrayReady);
@@ -457,11 +457,11 @@ void RenderDigits(uint8_t dispNumber, uint8_t setQuadrant) {
   i /= 10;
   if(i != 0) {
     j = 13;
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][0]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][1]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][2]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][3]]);
-    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][4]]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][0])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][1])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][2])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][3])]);
+    NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][4])]);
     j--;
   } 
   else {
@@ -470,11 +470,11 @@ void RenderDigits(uint8_t dispNumber, uint8_t setQuadrant) {
 
   i = dispNumber;
   i %= 10;
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][0]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][1]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][2]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][3]]);
-  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[FiveByEightDigitFont[i][4]]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][0])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][1])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][2])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][3])]);
+  NewDisplayArray[j--] = pgm_read_byte(&BitReverseTable256[pgm_read_byte(&FiveByEightDigitFont[i][4])]);
 
   // Copy the new display buffer to the main buffer when it's done drawing
   while(!DisplayArrayReady);

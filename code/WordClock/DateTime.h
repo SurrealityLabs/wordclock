@@ -8,12 +8,12 @@
 #define SECONDS_FROM_1970_TO_2000 946684800
 
 // Simple general-purpose date/time class (no TZ / DST / leap second handling!)
-class DateTime {
+class myDateTime {
 public:
-    DateTime (uint32_t t =0);
-    DateTime (uint16_t year, uint8_t month, uint8_t day,
+    myDateTime (uint32_t t =0);
+    myDateTime (uint16_t year, uint8_t month, uint8_t day,
                 uint8_t hour =0, uint8_t min =0, uint8_t sec =0);
-    DateTime (const char* date, const char* time);
+    myDateTime (const char* date, const char* time);
     uint16_t year() const       { return 2000 + yOff; }
     void setYear(uint16_t val)    { yOff = val - 2000; }
     uint8_t month() const       { return m; }
@@ -26,12 +26,14 @@ public:
     void setMinute(uint8_t val)      { mm = val; }
     void setSecond(uint8_t val)      { ss = val; }
     uint8_t second() const      { return ss; }
-    uint8_t dayOfWeek() const;
+    uint8_t dayWeek() const;
 
     // 32-bit times as seconds since 1/1/2000
     long secondstime() const;   
     // 32-bit times as seconds since 1/1/1970
     uint32_t unixtime(void) const;
+
+    void setUnixtime(uint32_t t);
 
 protected:
     uint8_t yOff, m, d, hh, mm, ss;

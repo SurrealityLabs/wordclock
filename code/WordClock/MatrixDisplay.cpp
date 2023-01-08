@@ -1,10 +1,11 @@
 #include "MatrixDisplay.h"
+#include <avr/pgmspace.h>
 
 volatile uint8_t DisplayArray[16];
 volatile uint8_t DisplayArrayReady = 1;
 
-uint8_t columnMaskH[] = {0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000, 0, 0, 0, 0, 0, 0, 0, 0};
-uint8_t columnMaskL[] = {0, 0, 0, 0, 0, 0, 0, 0, 0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000};
+const uint8_t columnMaskH[] PROGMEM = {0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000, 0, 0, 0, 0, 0, 0, 0, 0};
+const uint8_t columnMaskL[] PROGMEM = {0, 0, 0, 0, 0, 0, 0, 0, 0b00001000, 0b00010000, 0b00000100, 0b00100000, 0b00000010, 0b01000000, 0b00000001, 0b10000000};
 
 void ClearDisplayArray() {
     uint8_t i;
@@ -38,8 +39,8 @@ void OutputDisplayColumn(uint8_t colNum) {
 
     FastShiftOut(0);
     FastShiftOut(DisplayArray[colNum]);
-    FastShiftOut(columnMaskH[colNum]);
-    FastShiftOut(columnMaskL[colNum]);
+    FastShiftOut(pgm_read_byte(&columnMaskH[colNum]));
+    FastShiftOut(pgm_read_byte(&columnMaskL[colNum]));
 
     sbi(LoadPinPort, LoadPinBit);
   

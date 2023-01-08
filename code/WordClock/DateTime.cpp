@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // utility code, some of this could be exposed in the DateTime API if needed
 
-static uint8_t daysInMonth [] PROGMEM = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+const static uint8_t daysInMonth [] PROGMEM = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 
 // number of days since 2000/01/01, valid for 2001..2099
 static uint16_t date2days(uint16_t y, uint8_t m, uint8_t d) {
@@ -27,7 +27,7 @@ static long time2long(uint16_t days, uint8_t h, uint8_t m, uint8_t s) {
 // DateTime implementation - ignores time zones and DST changes
 // NOTE: also ignores leap seconds, see http://en.wikipedia.org/wiki/Leap_second
 
-DateTime::DateTime (uint32_t t) {
+myDateTime::myDateTime (uint32_t t) {
     t -= SECONDS_FROM_1970_TO_2000;    // bring to 2000 timestamp from 1970
 
     ss = t % 60;
@@ -54,7 +54,7 @@ DateTime::DateTime (uint32_t t) {
     d = days + 1;
 }
 
-DateTime::DateTime (uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec) {
+myDateTime::myDateTime (uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec) {
     if (year >= 2000)
         year -= 2000;
     yOff = year;
@@ -75,7 +75,7 @@ static uint8_t conv2d(const char* p) {
 // A convenient constructor for using "the compiler's time":
 //   DateTime now (__DATE__, __TIME__);
 // NOTE: using PSTR would further reduce the RAM footprint
-DateTime::DateTime (const char* date, const char* time) {
+myDateTime::myDateTime (const char* date, const char* time) {
     // sample input: date = "Dec 26 2009", time = "12:34:56"
     yOff = conv2d(date + 9);
     // Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec 
@@ -95,12 +95,12 @@ DateTime::DateTime (const char* date, const char* time) {
     ss = conv2d(time + 6);
 }
 
-uint8_t DateTime::dayOfWeek() const {    
+uint8_t myDateTime::dayWeek() const {    
     uint16_t day = date2days(yOff, m, d);
     return (day + 6) % 7; // Jan 1, 2000 is a Saturday, i.e. returns 6
 }
 
-uint32_t DateTime::unixtime(void) const {
+uint32_t myDateTime::unixtime(void) const {
     uint32_t t;
     uint16_t days = date2days(yOff, m, d);
     t = time2long(days, hh, mm, ss);
@@ -108,3 +108,31 @@ uint32_t DateTime::unixtime(void) const {
 
     return t;
 }
+
+void myDateTime::setUnixtime(uint32_t t) {
+    t -= SECONDS_FROM_1970_TO_2000;    // bring to 2000 timestamp from 1970
+
+    ss = t % 60;
+    t /= 60;
+    mm = t % 60;
+    t /= 60;
+    hh = t % 24;
+    uint16_t days = t / 24;
+    uint8_t leap;
+    for (yOff = 0; ; ++yOff) {
+        leap = yOff % 4 == 0;
+        if (days < 365 + leap)
+            break;
+        days -= 365 + leap;
+    }
+    for (m = 1; ; ++m) {
+        uint8_t daysPerMonth = pgm_read_byte(daysInMonth + m - 1);
+        if (leap && m == 2)
+            ++daysPerMonth;
+        if (days < daysPerMonth)
+            break;
+        days -= daysPerMonth;
+    }
+    d = days + 1;
+}
+
